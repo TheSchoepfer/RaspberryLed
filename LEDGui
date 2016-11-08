@@ -21,6 +21,7 @@ leds = LEDBoard(4,7,8,9,10,11,14,15,17,18, pmw=True)
   #      super(self.__class__, self).__init__() 
    #     self.setupUi(self)
 
+print("Hello GIT")
 print("VOR KLASSE")
 #The Buttons are assigned to the buttonClick events
 class ExampleApp(QtGui.QMainWindow, LEDGui.Ui_MainWindow):
