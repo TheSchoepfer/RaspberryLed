@@ -1,0 +1,52 @@
+def main():
+	from PyQt4 import QtGui
+	import sys
+	import LEDGui_Optionen
+	from gpiozero import Button, LEDBoard, PWMLED
+
+	button1 = Button(24)
+	button2 = Button(25)
+	
+	class Optionen(QtGui.QMainWindow, LEDGui_Optionen.Ui_MainWindow):
+		def __init__(self):
+			print("In Klasse")
+			super(self.__class__, self).__init__()
+			self.setupUi(self)
+			self.buttonAktualisieren.clicked.connect(self.aktualisieren)
+			
+		def aktualisieren(self):
+			global pausen
+			pausen = float(self.doubleSpinBox.value())
+			if pausen != 0.00:
+				leds.value=(0,0,0,0,0,0,0,0,0,0)
+				sleep(pausen)
+				leds.value=(1,1,1,1,1,1,1,1,1,1)
+				sleep(pausen)
+				leds.value=(0,0,0,0,0,0,0,0,0,0)
+                                sleep(pausen)
+				leds.value=(1,1,1,1,1,1,1,1,1,1)
+				sleep(pausen)
+				leds.value=(0,0,0,0,0,0,0,0,0,0)
+                                sleep(pausen)
+				leds.value=(1,1,1,1,1,1,1,1,1,1)
+                                sleep(pausen)
+				leds.value=(0,0,0,0,0,0,0,0,0,0)
+                                sleep(pausen)
+				leds.value=(1,1,1,1,1,1,1,1,1,1)
+
+			helligkeit = self.comboBox.currentText()
+			if helligkeit != 0.0:
+				print (helligkeit)
+				#leds.value=(helligkeit,helligkeit,helligkeit,helligkeit,helligkeit,helligkeit,helligkeit,helligkeit,helligkeit,helligkeit)
+				#leds.value=(helligkeit,helligkeit,helligkeit,helligkeit,helligkeit,helligkeit,helligkeit,helligkeit,helligkeit,helligkeit)
+				#leds.value=(helligkeit,helligkeit,helligkeit,helligkeit,helligkeit,helligkeit,helligkeit,helligkeit,helligkeit,helligkeit)
+				leds.value=(0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5)
+				
+				sleep(pausen)
+	print("IN MAIN")
+	form = Optionen()
+	form.show()
+	app.exec_()
+		
+if __name__=='__main__':
+	main()

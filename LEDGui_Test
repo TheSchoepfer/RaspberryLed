@@ -1,0 +1,41 @@
+from PyQt4 import QtGui
+import sys
+import LEDGui_Test
+from gpiozero import Button, LEDBoard
+
+def main():
+	from PyQt4 import QtGui
+	import sys
+	import LEDGui_Test
+	from gpiozero import Button
+
+	button1 = Button(24)
+	button2 = Button(25)
+
+	class Test(QtGui.QMainWindow, LEDGui_Test.Ui_MainWindow):
+	        def __init__(self):
+        	        print("In Klasse")
+                	super(self.__class__, self).__init__()
+                	self.setupUi(self)
+			self.ButtonLedOn.clicked.connect(self.LedOn)
+			self.ButtonLedOff.clicked.connect(self.LedOff)			
+			self.ButtonBack.clicked.connect(self.Back)
+
+		def LedOn(self):
+			leds.value=(1,1,1,1,1,1,1,1,1,1)				
+			print("Siehe Board! Wenn alle LEDs leuchten ist alles korrekt.")				
+		
+		def LedOff(self):
+                        leds.value=(0,0,0,0,0,0,0,0,0,0)
+                        print("Siehe Board! Wenn keine der LEDs leuchten ist alles korrekt.")
+		
+		def Back(self):
+			QApplication.quit()				
+
+	print("In MAIN")
+	form = Test()
+	form.show()
+	app.exec_()	
+
+if __name__=='__main__':
+	main()
