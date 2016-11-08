@@ -1,0 +1,388 @@
+from PyQt4 import QtGui
+import sys
+import LEDGui
+import LEDGui_Test
+from time import sleep
+from gpiozero import LEDBoard, PWMLED
+import threading
+import subprocess
+import os
+import LEDGui_Optionen
+import LEDGui_Optionen.Optionen
+from LEDGui_Optionen import Optionen
+
+#aktualisieren=LEDGui_Optionen.Optionen.aktualisieren.pausen
+#aktual= Optionen.aktualisieren
+#All LEDs on the Gretboard
+leds = LEDBoard(4,7,8,9,10,11,14,15,17,18, pmw=True)
+
+#class Test(QtGui.QMainWindow, LEDGui_Test.Ui_MainWindow):
+ #   def __init__(self):
+  #      super(self.__class__, self).__init__() 
+   #     self.setupUi(self)
+
+print("VOR KLASSE")
+#The Buttons are assigned to the buttonClick events
+class ExampleApp(QtGui.QMainWindow, LEDGui.Ui_MainWindow):
+    print("IN KLASSE")
+    def __init__(self):
+	print("IN INIT")
+        super(self.__class__, self).__init__()
+        self.setupUi(self)
+	self.ButtonLauflichtLR.clicked.connect(self.buttonClickLLR)
+	self.ButtonLauflichtRL.clicked.connect(self.buttonClickLRL)
+	self.ButtonTrennend.clicked.connect(self.buttonClickTR)
+        self.ButtonVerschieden.clicked.connect(self.buttonClickVS)
+	self.buttonOptionen.clicked.connect(self.buttonClickOptionen)	
+	self.buttonTest.clicked.connect(self.buttonClickTest)
+
+#--------------------------------------------------------------------------------------------
+#Lauflicht LLR
+#--------------------------------------------------------------------------------------------
+
+    #In all definitions are two Threads
+    #The first is ThreadRadioButtons
+    #and the second is ThreadLEDs
+
+    def buttonClickLLR(self):
+
+	#in ThreadRadioButtons are the Buttons, which
+	#represent the LEDs on the board.
+	#The advantage is that we can see what happens on the Raspberry Pi
+	# if it's in a case
+
+	def ThreadRadioButtons():
+		print("Thread RadioButtons ist gestartet")
+		self.LEDButton1.setChecked(True)
+		sleep(optionen.aktualisieren.pausen)
+		self.LEDButton1.setChecked(False)
+                self.LEDButton2.setChecked(True)
+		sleep(1)
+		self.LEDButton2.setChecked(False)
+                self.LEDButton3.setChecked(True)
+		sleep(1)
+		self.LEDButton3.setChecked(False)
+                self.LEDButton4.setChecked(True)
+		sleep(1)
+		self.LEDButton4.setChecked(False)
+                self.LEDButton5.setChecked(True)
+		sleep(1)
+		self.LEDButton5.setChecked(False)
+                self.LEDButton6.setChecked(True)
+		sleep(1)
+		self.LEDButton6.setChecked(False)
+                self.LEDButton7.setChecked(True)
+		sleep(1)
+		self.LEDButton7.setChecked(False)
+               	self.LEDButton8.setChecked(True)
+		sleep(1)
+		self.LEDButton8.setChecked(False)
+                self.LEDButton9.setChecked(True)
+		sleep(1)
+		self.LEDButton9.setChecked(False)
+                self.LEDButton10.setChecked(True)
+		sleep(1)
+		self.LEDButton10.setChecked(False)
+
+	#In ThreadLeds, we define the LEDs, which should 
+	#light up
+	def ThreadLeds():	
+		print("Thread LEDs ist gestartet")
+		leds.value=(1,0,0,0,0,0,0,0,0,0)
+		sleep(1)
+		leds.value=(0,1,0,0,0,0,0,0,0,0)
+		sleep(1)
+        	leds.value=(0,0,1,0,0,0,0,0,0,0)
+		sleep(1)
+        	leds.value=(0,0,0,1,0,0,0,0,0,0)
+		sleep(1)
+        	leds.value=(0,0,0,0,1,0,0,0,0,0)
+		sleep(1)
+        	leds.value=(0,0,0,0,0,1,0,0,0,0)
+        	sleep(1)
+       		leds.value=(0,0,0,0,0,0,1,0,0,0)
+       		sleep(1)
+       		leds.value=(0,0,0,0,0,0,0,1,0,0)
+       		sleep(1)
+        	leds.value=(0,0,0,0,0,0,0,0,1,0)
+        	sleep(1)
+        	leds.value=(0,0,0,0,0,0,0,0,0,1)
+
+    	th1=threading.Thread(target=ThreadRadioButtons)
+    	th2=threading.Thread(target=ThreadLeds)
+
+    	th1.start()
+    	th2.start()
+
+
+#------------------------------------------------------------------------------------------------
+#Lauflicht von rechts nach links
+#------------------------------------------------------------------------------------------------
+
+    def buttonClickLRL(self):
+
+        def ThreadRadioButtons():
+                print("Thread RadioButtons ist gestartet")
+                self.LEDButton10.setChecked(True)
+                sleep(1)
+                self.LEDButton10.setChecked(False)
+		self.LEDButton9.setChecked(True)
+                sleep(1)
+		self.LEDButton9.setChecked(False)
+                self.LEDButton8.setChecked(True)
+                sleep(1)
+		self.LEDButton8.setChecked(False)
+                self.LEDButton7.setChecked(True)
+                sleep(1)
+		self.LEDButton7.setChecked(False)
+                self.LEDButton6.setChecked(True)
+                sleep(1)
+		self.LEDButton6.setChecked(False)
+                self.LEDButton5.setChecked(True)
+                sleep(1)
+		self.LEDButton5.setChecked(False)
+                self.LEDButton4.setChecked(True)
+                sleep(1)
+		self.LEDButton4.setChecked(False)
+                self.LEDButton3.setChecked(True)
+                sleep(1)
+		self.LEDButton3.setChecked(False)
+                self.LEDButton2.setChecked(True)
+                sleep(1)
+		self.LEDButton2.setChecked(False)
+                self.LEDButton1.setChecked(True)
+		sleep(1)
+		self.LEDButton1.setChecked(False)
+
+        def ThreadLeds():
+                print("Thread LEDs ist gestartet")
+                leds.value=(0,0,0,0,0,0,0,0,0,1)
+                sleep(1)
+                leds.value=(0,0,0,0,0,0,0,0,1,0)
+                sleep(1)
+                leds.value=(0,0,0,0,0,0,0,1,0,0)
+                sleep(1)
+                leds.value=(0,0,0,0,0,0,1,0,0,0)
+                sleep(1)
+                leds.value=(0,0,0,0,0,1,0,0,0,0)
+                sleep(1)
+                leds.value=(0,0,0,0,1,0,0,0,0,0)
+                sleep(1)
+                leds.value=(0,0,0,1,0,0,0,0,0,0)
+                sleep(1)
+                leds.value=(0,0,1,0,0,0,0,0,0,0)
+                sleep(1)
+                leds.value=(0,1,0,0,0,0,0,0,0,0)
+                sleep(1)
+                leds.value=(1,0,0,0,0,0,0,0,0,0)
+
+        th1=threading.Thread(target=ThreadRadioButtons)
+        th2=threading.Thread(target=ThreadLeds)
+
+        th1.start()
+        th2.start()
+
+#------------------------------------------------------------------------------
+#Trennen
+#------------------------------------------------------------------------------
+
+
+    def buttonClickTR(self):
+
+	def ThreadRadioButtons():
+               	print("Thread RadioButtons ist gestartet")
+                self.LEDButton1.setChecked(True)
+		self.LEDButton2.setChecked(True)
+		self.LEDButton3.setChecked(True)
+		self.LEDButton4.setChecked(True)
+		self.LEDButton5.setChecked(True)
+		self.LEDButton6.setChecked(True)
+		self.LEDButton7.setChecked(True)
+		self.LEDButton8.setChecked(True)
+		self.LEDButton9.setChecked(True)
+		self.LEDButton10.setChecked(True)
+		sleep(1)
+		self.LEDButton6.setChecked(False)
+		self.LEDButton5.setChecked(False)	
+		sleep(1)
+		self.LEDButton4.setChecked(False)
+		self.LEDButton7.setChecked(False)
+		sleep(1)
+                self.LEDButton3.setChecked(False)
+		self.LEDButton8.setChecked(False)
+		sleep(1)
+		self.LEDButton2.setChecked(False)
+                self.LEDButton9.setChecked(False)
+		sleep(1)
+		self.LEDButton1.setChecked(False)
+                self.LEDButton10.setChecked(False)
+
+
+
+        def ThreadLeds():
+                print("Thread LEDs ist gestartet")
+                leds.value=(1,1,1,1,1,1,1,1,1,1)
+                sleep(1)
+                leds.value=(1,1,1,1,0,0,1,1,1,1)
+                sleep(1)
+                leds.value=(1,1,1,0,0,0,0,1,1,1)
+                sleep(1)
+                leds.value=(1,1,0,0,0,0,0,0,1,1)
+                sleep(1)
+                leds.value=(1,0,0,0,0,0,0,0,0,1)
+                sleep(1)
+                leds.value=(0,0,0,0,0,0,0,0,0,0)
+
+        th1=threading.Thread(target=ThreadRadioButtons)
+        th2=threading.Thread(target=ThreadLeds)
+
+        th1.start()
+        th2.start()
+
+#---------------------------------------------------------------------------
+#Verschieden
+#---------------------------------------------------------------------------
+
+
+    def buttonClickVS(self):
+
+        def ThreadRadioButtons():
+                print("Thread RadioButtons ist gestartet")
+                self.LEDButton1.setChecked(True)
+                self.LEDButton2.setChecked(True)
+                self.LEDButton3.setChecked(True)
+                self.LEDButton4.setChecked(True)
+                self.LEDButton5.setChecked(True)
+                self.LEDButton6.setChecked(True)
+                self.LEDButton7.setChecked(True)
+                self.LEDButton8.setChecked(True)
+                self.LEDButton9.setChecked(True)
+                self.LEDButton10.setChecked(True)
+                sleep(30.0/200.0)
+                self.LEDButton6.setChecked(False)
+                self.LEDButton5.setChecked(False)
+                sleep(30.0/200.0)
+                self.LEDButton4.setChecked(False)
+		self.LEDButton7.setChecked(False)
+                sleep(30.0/200.0)
+                self.LEDButton3.setChecked(False)
+                self.LEDButton8.setChecked(False)
+                sleep(30.0/200.0)
+                self.LEDButton2.setChecked(False)
+                self.LEDButton9.setChecked(False)
+                sleep(30.0/200.0)
+                self.LEDButton1.setChecked(False)
+                self.LEDButton10.setChecked(False) 
+		sleep(30.0/200.0)
+		self.LEDButton1.setChecked(True)
+                self.LEDButton10.setChecked(True)
+		sleep(30.0/200.0)
+                self.LEDButton2.setChecked(True)
+                self.LEDButton9.setChecked(True)
+		sleep(30.0/200.0)
+                self.LEDButton3.setChecked(True)
+                self.LEDButton8.setChecked(True)
+		sleep(30.0/200.0)
+                self.LEDButton4.setChecked(True)
+                self.LEDButton7.setChecked(True)
+		sleep(30.0/200.0)
+                self.LEDButton6.setChecked(True)
+                self.LEDButton5.setChecked(True)	
+		sleep(30.0/200.0)
+		self.LEDButton4.setChecked(False)
+                self.LEDButton7.setChecked(False)
+		sleep(30.0/200.0)
+		self.LEDButton4.setChecked(True)
+                self.LEDButton7.setChecked(True)
+		self.LEDButton3.setChecked(False)
+                self.LEDButton8.setChecked(False)
+                sleep(30.0/200.0)
+		self.LEDButton3.setChecked(True)
+                self.LEDButton8.setChecked(True)
+                self.LEDButton4.setChecked(False)
+                self.LEDButton7.setChecked(False)
+                sleep(30.0/200.0)
+                self.LEDButton4.setChecked(True)
+                self.LEDButton7.setChecked(True)
+                self.LEDButton3.setChecked(False)
+                self.LEDButton8.setChecked(False)
+                sleep(30.0/200.0)
+                self.LEDButton3.setChecked(True)
+                self.LEDButton8.setChecked(True)
+		self.LEDButton4.setChecked(False)
+                self.LEDButton7.setChecked(False)
+                sleep(30.0/200.0)
+                self.LEDButton4.setChecked(True)
+                self.LEDButton7.setChecked(True)
+                self.LEDButton3.setChecked(False)
+                self.LEDButton8.setChecked(False)
+
+        def ThreadLeds():
+                print("Thread LEDs ist gestartet")
+                leds.value=(1,1,1,1,1,1,1,1,1,1)
+                sleep(30.0/200.0)
+                leds.value=(1,1,1,1,0,0,1,1,1,1)
+                sleep(30.0/200.0)
+                leds.value=(1,1,1,0,0,0,0,1,1,1)
+                sleep(30.0/200.0)
+                leds.value=(1,1,0,0,0,0,0,0,1,1)
+                sleep(30.0/200.0)
+                leds.value=(1,0,0,0,0,0,0,0,0,1)
+                sleep(30.0/200.0)
+                leds.value=(0,0,0,0,0,0,0,0,0,0)
+		sleep(30.0/200.0)
+                leds.value=(1,0,0,0,0,0,0,0,0,1)
+		sleep(30.0/200.0)
+                leds.value=(1,1,0,0,0,0,0,0,1,1)
+		sleep(30.0/200.0)
+                leds.value=(1,1,1,0,0,0,0,1,1,1)
+		sleep(30.0/200.0)
+                leds.value=(1,1,1,1,0,0,1,1,1,1)
+		sleep(30.0/200.0)
+		leds.value=(1,1,1,1,1,1,1,1,1,1)
+		sleep(30.0/200.0)
+		leds.value=(1,1,1,0,1,1,0,1,1,1)
+		sleep(30.0/200.0)
+                leds.value=(1,1,0,1,1,1,1,0,1,1)
+		sleep(30.0/200.0)
+                leds.value=(1,1,1,0,1,1,0,1,1,1)
+                sleep(30.0/200.0)
+                leds.value=(1,1,0,1,1,1,1,0,1,1)
+
+
+        th1=threading.Thread(target=ThreadRadioButtons)
+        th2=threading.Thread(target=ThreadLeds)
+
+        th1.start()
+        th2.start()
+
+#------------------------------------------------------------------
+#Test
+#------------------------------------------------------------------
+
+    def buttonClickTest(self):
+	runit = "LEDGui_Test"   #files liegen im selben VZ
+	execfile(runit)
+
+#------------------------------------------------------------------
+#Optionen
+#------------------------------------------------------------------
+
+    def buttonClickTest(self):
+	runit = "LEDGui_Test"   #files liegen im selben VZ
+        execfile(runit)
+
+    def buttonClickOptionen(self):
+	runit = "LEDGui_Optionen"   #files liegen im selben VZ
+        execfile(runit)
+
+	
+
+def main():
+	app = QtGui.QApplication(sys.argv)
+    	form = ExampleApp()
+    	form.show()
+    	app.exec_()
+
+if __name__ == '__main__':
+	main()
